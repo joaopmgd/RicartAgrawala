@@ -10,11 +10,41 @@ public class Message implements Serializable,Comparable<Message>{
     private int clockFromProcess;
     private int pid;
     private String message;
+    private boolean askingPermission;
+    private int resourceName;
+    private boolean reply;
 
     public Message(String message, int clockFromProcess, int pid){
         this.clockFromProcess = clockFromProcess;
         this.pid = pid;
         this.message = message;
+        this.askingPermission = false;
+    }
+
+    public Message(int resourceName, int pid){
+        this.resourceName = resourceName;
+        this.pid = pid;
+        this.askingPermission = true;
+    }
+
+    public Message (boolean answer){
+        this.reply = answer;
+    }
+
+    public boolean isReply() {
+        return reply;
+    }
+
+    public boolean isAskingPermission() {
+        return askingPermission;
+    }
+
+    public int getResourceName() {
+        return resourceName;
+    }
+
+    public int getPid() {
+        return pid;
     }
 
     public int getClockFromProcess() {

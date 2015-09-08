@@ -16,19 +16,25 @@ public class Main {
         p2.start();
         p3.start();
 
-        p1.connect("localhost",3002);
-        p1.connect("localhost",3003);
+        p1.connect("localhost", 3002);
+        p1.connect("localhost", 3003);
 
-        p2.connect("localhost",3001);
-        p2.connect("localhost",3003);
+        p2.connect("localhost", 3001);
+        p2.connect("localhost", 3003);
 
-        p3.connect("localhost",3001);
-        p3.connect("localhost",3002);
+        p3.connect("localhost", 3001);
+        p3.connect("localhost", 3002);
 
+        p1.setSharedResource(1, true);
+        p2.setSharedResource(1, true);
+        p3.setSharedResource(1, true);
+
+        p3.sendMessage();
+        p2.sendMessage();
         p1.sendMessage();
-        p2.sendMessage();
-        p2.sendMessage();
 
-
+//        p1.closeConnection();
+//        p2.closeConnection();
+//        p3.closeConnection();
     }
 }

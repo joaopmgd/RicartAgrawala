@@ -13,12 +13,14 @@ public class Server extends Thread {
 
     private ServerSocket serverSocket;
     private ArrayList<Socket> socketList;
+    private ArrayList<ManageRequisition> streams;
     private Process process;
 
     public Server(int port, Process process){
         try {
             this.serverSocket = new ServerSocket(port);
             this.socketList = new ArrayList<Socket>();
+            this.streams = new ArrayList<ManageRequisition>();
             this.process = process;
         } catch (IOException e) {
             e.printStackTrace();
@@ -31,6 +33,7 @@ public class Server extends Thread {
                 Socket client = serverSocket.accept();
                 socketList.add(client);
                 ManageRequisition stream = new ManageRequisition(client,this);
+                streams.add(stream);
                 stream.start();
             }
         } catch (IOException e) {
@@ -50,5 +53,19 @@ public class Server extends Thread {
     public void run() {
         receiveMessage();
     }
-}
 
+    public void closeConnection(){
+        try {
+            for(ManageRequisition stream : streams)
+                stream.closeConnection();
+            serverSocket.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public boolean askPermission(int resourceName, int messagePid){
+        return process.askPermission(resourceName, messagePid);
+    }
+
+}

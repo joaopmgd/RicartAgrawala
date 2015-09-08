@@ -16,6 +16,8 @@ public class Process extends Thread{
     private ArrayList<Message> messages;
     private Client client;
     private Server server;
+    private boolean sharedResource;
+    private int resourceName;
 
 
     public Process(String ip ,int port, int pid){
@@ -24,7 +26,30 @@ public class Process extends Thread{
         this.pid = pid;
         this.clock = 0;
         this.messages = new ArrayList<Message>();
-        this.client = new Client();
+        this.sharedResource = false;
+        this.resourceName = 0;
+        this.client = new Client(this);
+    }
+
+    public int getClock() {
+        return clock;
+    }
+
+    public int getPid() {
+        return pid;
+    }
+
+    public int getResourceName() {
+        return resourceName;
+    }
+
+    public boolean isSharedResource() {
+        return sharedResource;
+    }
+
+    public void setSharedResource(int resourceName, boolean sharedResource) {
+        this.resourceName = resourceName;
+        this.sharedResource = sharedResource;
     }
 
     public void startListening(){
@@ -38,8 +63,11 @@ public class Process extends Thread{
     }
 
     public void sendMessage(){
+        client.start();
+    }
+
+    public void addClock(){
         this.clock++;
-        client.sendMessage(this.clock, this.pid);
     }
 
     public void addMessage(Message message){
@@ -52,11 +80,25 @@ public class Process extends Thread{
     }
 
     public void updateClock(int clockFromMessage){
-        this.clock = Math.max(this.clock, clockFromMessage)+1;
+        this.clock = Math.max(this.clock, clockFromMessage);
+    }
+
+    public boolean askPermission(int resourceName, int messagePid){
+        if ((this.sharedResource) && (this.resourceName == resourceName) && (this.pid < messagePid)){
+            return false;
+        }else{
+            return true;
+        }
     }
 
     @Override
     public void run(){
         startListening();
     }
+
+    public void closeConnection(){
+        server.closeConnection();
+        client.closeConnection();
+    }
+
 }
