@@ -1,7 +1,10 @@
 package RicartAgrawala;
 
 /**
- * Created by joao on 03/09/15.
+ * Created on 03/09/15.
+ * by
+ * João Pedro M. G. Dias 511455
+ * Andre Luiz Beltrami 489611
  */
 
 public class Main {
@@ -29,10 +32,27 @@ public class Main {
         p2.setSharedResource(1, true);
         p3.setSharedResource(1, true);
 
+//        Sends a message and starts a new thread for client
         p3.sendMessage();
         p2.sendMessage();
         p1.sendMessage();
+//        Sends a message
+        p3.sendAnotherMessage();
+        p2.sendAnotherMessage();
+        p1.sendAnotherMessage();
 
+        try {
+            Thread.sleep(150);
+            p1.printMessages();
+            Thread.sleep(150);
+            p2.printMessages();
+            Thread.sleep(150);
+            p3.printMessages();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.exit(0);
 //        p1.closeConnection();
 //        p2.closeConnection();
 //        p3.closeConnection();

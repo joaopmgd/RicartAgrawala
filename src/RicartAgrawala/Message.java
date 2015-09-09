@@ -3,8 +3,12 @@ package RicartAgrawala;
 import java.io.Serializable;
 
 /**
- * Created by joao on 03/09/15.
+ * Created on 03/09/15.
+ * by
+ * João Pedro M. G. Dias 511455
+ * Andre Luiz Beltrami 489611
  */
+
 public class Message implements Serializable,Comparable<Message>{
 
     private int clockFromProcess;
@@ -50,6 +54,8 @@ public class Message implements Serializable,Comparable<Message>{
     public int getClockFromProcess() {
         return clockFromProcess;
     }
+
+    public void addResourceName(){ resourceName++; }
 
     @Override
     public int compareTo(Message message) {

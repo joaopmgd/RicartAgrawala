@@ -1,7 +1,10 @@
 package RicartAgrawala;
 
 /**
- * Created by joao on 03/09/15.
+ * Created on 03/09/15.
+ * by
+ * João Pedro M. G. Dias 511455
+ * Andre Luiz Beltrami 489611
  */
 
 import java.io.IOException;
@@ -44,6 +47,16 @@ public class Client extends Thread{
                     ObjectInputStream input = new ObjectInputStream(s.getInputStream());
                     Message permission = (Message) input.readObject();
                     reply = permission.isReply();
+                    if(!reply){
+                        System.out.println("Resource " +askPermission.getResourceName() +" was denied to process "+ process.getPid()+".");
+                        process.addResourceName();
+                        askPermission.addResourceName();
+                        try {
+                            Thread.sleep(250);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
             }
         } catch (IOException e) {
@@ -55,17 +68,23 @@ public class Client extends Thread{
 
     public void sendMessage(){
         try {
-            askPermission();
+            if (process.isSharedResource()){
+                System.out.println("Process "+process.getPid()+" is asking for permission.");
+                askPermission();
+           }
             process.addClock();
-            System.out.println("Process " + process.getPid() + " got permission to send messages.\nType the message that process " + process.getPid() + " will send:");
-            Scanner scanner = new Scanner(System.in);
-            String text = scanner.nextLine();
+            System.out.println("Process " + process.getPid() + " got permission to send messages using resource "+process.getResourceName() +".");
+
+//            Scanner scanner = new Scanner(System.in);
+//            String text = scanner.nextLine();
+            String text = "Message from process "+ process.getPid()+ ".";
+
             Message message = new Message(text,process.getClock(),process.getPid());
             for(Socket s:socketList){
                 ObjectOutputStream out = new ObjectOutputStream(s.getOutputStream());
                 out.writeObject(message);
             }
-            process.setSharedResource(process.getResourceName(),false);
+            process.setSharedResource(0,false);
         } catch (IOException e) {
             e.printStackTrace();
         }

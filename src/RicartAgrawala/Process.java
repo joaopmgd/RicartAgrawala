@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.Collections;
 
 /**
- * Created by joao on 03/09/15.
+ * Created on 03/09/15.
+ * by
+ * João Pedro M. G. Dias 511455
+ * Andre Luiz Beltrami 489611
  */
 
 public class Process extends Thread{
@@ -30,6 +33,8 @@ public class Process extends Thread{
         this.resourceName = 0;
         this.client = new Client(this);
     }
+
+    public void addResourceName(){ this.resourceName++; }
 
     public int getClock() {
         return clock;
@@ -66,6 +71,15 @@ public class Process extends Thread{
         client.start();
     }
 
+    public void sendAnotherMessage(){
+        try {
+            Thread.sleep(150);
+            client.sendMessage();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void addClock(){
         this.clock++;
     }
@@ -76,6 +90,13 @@ public class Process extends Thread{
         for (Message m: messages){
             System.out.print("Process "+pid+" received ");
             m.printMessage();
+        }
+    }
+
+    public void printMessages() {
+        System.out.println("\n\nMesages that process " + this.pid + " received.");
+        for (Message message: messages){
+            message.printMessage();
         }
     }
 

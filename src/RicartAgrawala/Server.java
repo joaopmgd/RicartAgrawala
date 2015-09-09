@@ -1,7 +1,10 @@
 package RicartAgrawala;
 
 /**
- * Created by joao on 03/09/15.
+ * Created on 03/09/15.
+ * by
+ * João Pedro M. G. Dias 511455
+ * Andre Luiz Beltrami 489611
  */
 
 import java.io.IOException;
